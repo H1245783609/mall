@@ -12,13 +12,22 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-
+/**
+ * 地址操作方法类
+ * @author panjing
+ */
 @Service("iShippingService")
 public class ShippingServiceImpl implements IShippingService {
 
     @Autowired
     private ShippingMapper shippingMapper;
 
+    /**
+     * 新增收货地址
+     * @param userId
+     * @param shipping
+     * @return
+     */
     public ServerResponse add(Integer userId, Shipping shipping){
         shipping.setUserId(userId);
         int rowCount  = shippingMapper.insert(shipping);
@@ -30,6 +39,12 @@ public class ShippingServiceImpl implements IShippingService {
         return ServerResponse.createByErrorMessage("新建地址失败");
     }
 
+    /**
+     * 删除收货地址
+     * @param userId
+     * @param shippingId
+     * @return
+     */
     public ServerResponse<String> del(Integer userId, Integer shippingId){
         int resultCount = shippingMapper.deleteByShippingIdUserId(userId, shippingId);
         if(resultCount > 0){
@@ -38,6 +53,12 @@ public class ShippingServiceImpl implements IShippingService {
         return ServerResponse.createByErrorMessage("删除地址失败");
     }
 
+    /**
+     * 更新收货地址
+     * @param userId
+     * @param shipping
+     * @return
+     */
     public ServerResponse update(Integer userId, Shipping shipping){
         shipping.setUserId(userId);
         int rowCount  = shippingMapper.updateByShipping(shipping);
@@ -47,6 +68,12 @@ public class ShippingServiceImpl implements IShippingService {
         return ServerResponse.createByErrorMessage("更新地址失败");
     }
 
+    /**
+     * 选择收获地址
+     * @param userId
+     * @param shippingId
+     * @return
+     */
     public ServerResponse<Shipping> select(Integer userId, Integer shippingId){
         Shipping shipping = shippingMapper.selectByShippingIdUserId(userId, shippingId);
         if(shipping == null){
@@ -55,6 +82,13 @@ public class ShippingServiceImpl implements IShippingService {
         return ServerResponse.createBySuccess("查询地址成功", shipping);
     }
 
+    /**
+     * 查看收货地址列表
+     * @param userId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     public ServerResponse<PageInfo> list(Integer userId, int pageNum, int pageSize){
         PageHelper.startPage(pageNum, pageSize);
         List<Shipping> shippingList = shippingMapper.selectByUserId(userId);

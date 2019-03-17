@@ -1,7 +1,10 @@
 package com.mall.vo;
 
 import java.math.BigDecimal;
-
+/**
+ * 商品详情抽象对象
+ * @author panjing
+ */
 public class ProductDetailVo {
 
     private Integer id;

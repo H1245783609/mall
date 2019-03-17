@@ -11,6 +11,10 @@ import org.codehaus.jackson.type.TypeReference;
 
 import java.text.SimpleDateFormat;
 
+/**
+ * Jackson工具类
+ * @author panjing
+ */
 @Slf4j
 public class JsonUtil {
 
@@ -33,7 +37,12 @@ public class JsonUtil {
     }
 
 
-
+    /**
+     * obj ——> str
+     * @param obj
+     * @param <T>
+     * @return
+     */
     public static <T> String obj2String(T obj){
         if(obj == null){
             return null;
@@ -46,6 +55,12 @@ public class JsonUtil {
         }
     }
 
+    /**
+     * obj ——> str (格式化过的)
+     * @param obj
+     * @param <T>
+     * @return
+     */
     public static <T> String obj2StringPretty(T obj){
         if(obj == null){
             return null;
@@ -58,10 +73,11 @@ public class JsonUtil {
         }
     }
 
-
-
-
-
+    /**
+     * str ——> obj
+     * @param <T>
+     * @return
+     */
     public static <T> T string2Obj(String str,Class<T> clazz){
         if(StringUtils.isEmpty(str) || clazz == null){
             return null;
@@ -75,8 +91,11 @@ public class JsonUtil {
         }
     }
 
-
-
+    /**
+     * str ——> obj
+     * @param <T>
+     * @return
+     */
     public static <T> T string2Obj(String str, TypeReference<T> typeReference){
         if(StringUtils.isEmpty(str) || typeReference == null){
             return null;
@@ -89,7 +108,11 @@ public class JsonUtil {
         }
     }
 
-
+    /**
+     * str ——> obj
+     * @param <T>
+     * @return
+     */
     public static <T> T string2Obj(String str,Class<?> collectionClass,Class<?>... elementClasses){
         JavaType javaType = objectMapper.getTypeFactory().constructParametricType(collectionClass,elementClasses);
         try {

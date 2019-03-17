@@ -1,5 +1,8 @@
 package com.mall.vo;
-
+/**
+ * 收货地址抽象对象
+ * @author panjing
+ */
 public class ShippingVo {
     private String receiverName;
 

@@ -56,6 +56,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * 订单操作方法类
+ * @author panjing
+ */
 @Service("iOrderService")
 @Slf4j
 public class OrderServiceImpl implements IOrderService {
@@ -89,6 +93,12 @@ public class OrderServiceImpl implements IOrderService {
     private ShippingMapper shippingMapper;
 
 
+    /**
+     * 创建订单
+     * @param userId 用户id
+     * @param shippingId 收获地址id
+     * @return
+     */
     public  ServerResponse createOrder(Integer userId,Integer shippingId){
 
         //从购物车中获取数据
@@ -126,7 +136,6 @@ public class OrderServiceImpl implements IOrderService {
         OrderVo orderVo = assembleOrderVo(order,orderItemList);
         return ServerResponse.createBySuccess(orderVo);
     }
-
 
     private OrderVo assembleOrderVo(Order order,List<OrderItem> orderItemList){
         OrderVo orderVo = new OrderVo();
@@ -280,7 +289,12 @@ public class OrderServiceImpl implements IOrderService {
         return ServerResponse.createBySuccess(orderItemList);
     }
 
-
+    /**
+     * 取消订单
+     * @param userId
+     * @param orderNo 订单号
+     * @return
+     */
     public ServerResponse<String> cancel(Integer userId,Long orderNo){
         Order order  = orderMapper.selectByUserIdAndOrderNo(userId,orderNo);
         if(order == null){
@@ -301,6 +315,11 @@ public class OrderServiceImpl implements IOrderService {
     }
 
 
+    /**
+     * 获取订单商品
+     * @param userId
+     * @return
+     */
     public ServerResponse getOrderCartProduct(Integer userId){
         OrderProductVo orderProductVo = new OrderProductVo();
         //从购物车中获取数据
@@ -325,7 +344,12 @@ public class OrderServiceImpl implements IOrderService {
         return ServerResponse.createBySuccess(orderProductVo);
     }
 
-
+    /**
+     * 获取订单商品详情
+     * @param userId
+     * @param orderNo
+     * @return
+     */
     public ServerResponse<OrderVo> getOrderDetail(Integer userId,Long orderNo){
         Order order = orderMapper.selectByUserIdAndOrderNo(userId,orderNo);
         if(order != null){
@@ -337,6 +361,13 @@ public class OrderServiceImpl implements IOrderService {
     }
 
 
+    /**
+     * 获取订单列表
+     * @param userId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     public ServerResponse<PageInfo> getOrderList(Integer userId,int pageNum,int pageSize){
         PageHelper.startPage(pageNum,pageSize);
         List<Order> orderList = orderMapper.selectByUserId(userId);
@@ -362,7 +393,6 @@ public class OrderServiceImpl implements IOrderService {
         }
         return orderVoList;
     }
-
 
 
     public ServerResponse pay(Long orderNo,Integer userId,String path){
@@ -497,6 +527,7 @@ public class OrderServiceImpl implements IOrderService {
         }
     }
 
+
     public ServerResponse aliCallback(Map<String,String> params){
         Long orderNo = Long.parseLong(params.get("out_trade_no"));
         String tradeNo = params.get("trade_no");
@@ -526,7 +557,12 @@ public class OrderServiceImpl implements IOrderService {
         return ServerResponse.createBySuccess();
     }
 
-
+    /**
+     * 查询订单付款状态
+     * @param userId
+     * @param orderNo
+     * @return
+     */
     public ServerResponse queryOrderPayStatus(Integer userId,Long orderNo){
         Order order = orderMapper.selectByUserIdAndOrderNo(userId,orderNo);
         if(order == null){
@@ -541,6 +577,12 @@ public class OrderServiceImpl implements IOrderService {
 
     //backend
 
+    /**
+     * 后台查看订单列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     public ServerResponse<PageInfo> manageList(int pageNum,int pageSize){
         PageHelper.startPage(pageNum,pageSize);
         List<Order> orderList = orderMapper.selectAllOrder();
@@ -550,7 +592,11 @@ public class OrderServiceImpl implements IOrderService {
         return ServerResponse.createBySuccess(pageResult);
     }
 
-
+    /**
+     * 后台查看订单详情
+     * @param orderNo
+     * @return
+     */
     public ServerResponse<OrderVo> manageDetail(Long orderNo){
         Order order = orderMapper.selectByOrderNo(orderNo);
         if(order != null){
@@ -562,7 +608,13 @@ public class OrderServiceImpl implements IOrderService {
     }
 
 
-
+    /**
+     * 后台搜索订单
+     * @param orderNo
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     public ServerResponse<PageInfo> manageSearch(Long orderNo,int pageNum,int pageSize){
         PageHelper.startPage(pageNum,pageSize);
         Order order = orderMapper.selectByOrderNo(orderNo);
@@ -578,6 +630,11 @@ public class OrderServiceImpl implements IOrderService {
     }
 
 
+    /**
+     * 后台订单发货
+     * @param orderNo
+     * @return
+     */
     public ServerResponse<String> manageSendGoods(Long orderNo){
         Order order= orderMapper.selectByOrderNo(orderNo);
         if(order != null){
@@ -591,6 +648,10 @@ public class OrderServiceImpl implements IOrderService {
         return ServerResponse.createByErrorMessage("订单不存在");
     }
 
+    /**
+     * 定时关闭订单
+     * @param hour 小时
+     */
     public void closeOrder(int hour){
         Date closeDateTime = DateUtils.addHours(new Date(), -hour);
         List<Order> orderList = orderMapper.selectOrderStatusByCreateTime(Const.OrderStatusEnum.NO_PAY.getCode(), DateTimeUtil.dateToStr(closeDateTime));

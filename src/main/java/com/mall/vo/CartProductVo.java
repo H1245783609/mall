@@ -2,7 +2,10 @@ package com.mall.vo;
 
 import java.math.BigDecimal;
 
-//结合了产品和购物车的一个抽象对象
+/**
+ * 结合了产品和购物车的一个抽象对象
+ * @author panjing
+ */
 public class CartProductVo {
     private Integer id;
     private Integer userId;

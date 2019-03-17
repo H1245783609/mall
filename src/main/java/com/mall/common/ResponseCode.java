@@ -1,5 +1,8 @@
 package com.mall.common;
 
+/**
+ * 服务器响应状态类
+ */
 public enum ResponseCode {
     SUCCESS(0, "SUCCESS"),
     ERROR(1, "ERROR"),

@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 前台 商品操作控制类
+ * @author panjing
+ */
 @Controller
 @RequestMapping("/product")
 public class ProductController {

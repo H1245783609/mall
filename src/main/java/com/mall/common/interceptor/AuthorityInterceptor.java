@@ -18,8 +18,20 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * SpringMVC权限拦截类
+ * @author panjing
+ */
 @Slf4j
 public class AuthorityInterceptor implements HandlerInterceptor {
+    /**
+     * controller执行之前执行
+     * @param httpServletRequest
+     * @param httpServletResponse
+     * @param handler
+     * @return
+     * @throws Exception
+     */
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler) throws Exception {
         log.info("preHandle");
@@ -27,11 +39,14 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         HandlerMethod handlerMethod = (HandlerMethod) handler;
 
         //解析
+        //获取方法名
         String methodName = handlerMethod.getMethod().getName();
+        //获取简单类名
         String className = handlerMethod.getBean().getClass().getSimpleName();
 
         //解析参数，具体的参数key以及value是什么，打印日志
         StringBuilder requestParamBuffer = new StringBuilder();
+        //获取参数集合
         Map paramMap = httpServletRequest.getParameterMap();
         Iterator it = paramMap.entrySet().iterator();
         while (it.hasNext()){
@@ -49,12 +64,14 @@ public class AuthorityInterceptor implements HandlerInterceptor {
             requestParamBuffer.append(mapKey).append("=").append(mapValue);
         }
 
+        //放行UserManageController中的login方法
         if(StringUtils.equals(className, "UserManageController") && (StringUtils.equals(methodName, "login"))){
             log.info("权限拦截器拦截到请求，className:{},methodName:{},param:{}", className, methodName, requestParamBuffer.toString());
             //如果是拦截到登录请求，不打印参数，因为参数里面有密码，全部会打印到日志中，防止泄露
             return true;
         }
 
+        //获取当前登录对象
         User user = (User)httpServletRequest.getSession().getAttribute(Const.CURRENT_USER);
         if(user == null || (user.getRole().intValue() != Const.Role.ROLE_ADMIN)){
             //返回false，即不会调用controller的方法
@@ -64,7 +81,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 
             PrintWriter out = httpServletResponse.getWriter();
 
-            // 上传由于富文本空间的要求，要特殊处理返回值，这里面区分是否登录以及是否有权限
+            // 上传由于富文本控件的要求，要特殊处理返回值，这里面区分是否登录以及是否有权限
             if(user == null){
                 if(StringUtils.equals(className, "ProductManageController ") && (StringUtils.equals(methodName, "richtextImgUpload"))){
                     Map resultMap = Maps.newHashMap();
@@ -91,11 +108,27 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         return true;
     }
 
+    /**
+     * controller执行之后执行
+     * @param httpServletRequest
+     * @param httpServletResponse
+     * @param handler
+     * @param modelAndView
+     * @throws Exception
+     */
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler, ModelAndView modelAndView) throws Exception {
         log.info("postHandle");
     }
 
+    /**
+     * controller执行之后执行
+     * @param httpServletRequest
+     * @param httpServletResponse
+     * @param handler
+     * @param e
+     * @throws Exception
+     */
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object handler, Exception e) throws Exception {
         log.info("afterCompletion");

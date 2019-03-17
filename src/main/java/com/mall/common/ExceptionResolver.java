@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 全局异常处理类
+ * @author panjing
  */
 @Slf4j
 @Component

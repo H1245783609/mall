@@ -21,6 +21,10 @@ import javax.servlet.http.HttpSession;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * 前台 订单操作控制类
+ * @author panjing
+ */
 @Controller
 @RequestMapping("/order/")
 @Slf4j
@@ -29,6 +33,12 @@ public class OrderController {
     @Autowired
     private IOrderService iOrderService;
 
+    /**
+     * 创建订单
+     * @param session
+     * @param shippingId 商品id
+     * @return
+     */
     @RequestMapping("create.do")
     @ResponseBody
     public ServerResponse create(HttpSession session, Integer shippingId){
@@ -39,6 +49,12 @@ public class OrderController {
         return iOrderService.createOrder(user.getId(), shippingId);
     }
 
+    /**
+     * 取消订单
+     * @param session
+     * @param orderNo 订单号
+     * @return
+     */
     @RequestMapping("cancel.do")
     @ResponseBody
     public ServerResponse cancel(HttpSession session, Long orderNo){
@@ -49,6 +65,11 @@ public class OrderController {
         return iOrderService.cancel(user.getId(), orderNo);
     }
 
+    /**
+     * 获取订单中所有商品
+     * @param session
+     * @return
+     */
     @RequestMapping("get_order_cart_product.do")
     @ResponseBody
     public ServerResponse getOrderCartProduct(HttpSession session){
@@ -59,6 +80,12 @@ public class OrderController {
         return iOrderService.getOrderCartProduct(user.getId());
     }
 
+    /**
+     * 查看订单详情
+     * @param session
+     * @param orderNo 订单号
+     * @return
+     */
     @RequestMapping("detail.do")
     @ResponseBody
     public ServerResponse detail(HttpSession session, Long orderNo){
@@ -69,6 +96,13 @@ public class OrderController {
         return iOrderService.getOrderDetail(user.getId(), orderNo);
     }
 
+    /**
+     * 产看订单集合
+     * @param session
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @RequestMapping("list.do")
     @ResponseBody
     public ServerResponse list(HttpSession session, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum, @RequestParam(value = "pageSize", defaultValue = "10") int pageSize){
@@ -89,7 +123,6 @@ public class OrderController {
         String path = request.getSession().getServletContext().getRealPath("upload");
         return iOrderService.pay(orderNo, user.getId(), path);
     }
-
 
     @RequestMapping("alipay_callback.do")
     @ResponseBody
@@ -130,6 +163,12 @@ public class OrderController {
         return Const.AlipayCallback.RESPONSE_FAILED;
     }
 
+    /**
+     * 查看订单的付款状态
+     * @param session
+     * @param orderNo 订单号
+     * @return
+     */
     @RequestMapping("query_order_pay_status.do")
     @ResponseBody
     public ServerResponse<Boolean> queryOrderPayStatus(HttpSession session, Long orderNo){

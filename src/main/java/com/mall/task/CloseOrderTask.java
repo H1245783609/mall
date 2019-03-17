@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+/**
+ * 定时关单
+ * @author panjing
+ */
 @Component
 @Slf4j
 public class CloseOrderTask {

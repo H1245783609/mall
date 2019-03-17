@@ -10,10 +10,20 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
+
+/**
+ * 文件处理类
+ */
 @Service("iFileService")
 @Slf4j
 public class FileServiceImpl implements IFileService {
 
+    /**
+     * 文件上传
+     * @param file 文件
+     * @param path 路径
+     * @return
+     */
     public String upload(MultipartFile file, String path){
         String fileName = file.getOriginalFilename();
         //扩展名

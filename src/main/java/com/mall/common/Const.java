@@ -4,6 +4,10 @@ import com.google.common.collect.Sets;
 
 import java.util.Set;
 
+/**
+ * 常量类
+ * @author panjing
+ */
 public class Const {
     public static final String CURRENT_USER = "currentUser";
 
@@ -64,7 +68,6 @@ public class Const {
         public String getValue() {
             return value;
         }
-
 
         public int getCode() {
             return code;

@@ -3,6 +3,10 @@ package com.mall.vo;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * 购物车抽象对象
+ * @author panjing
+ */
 public class CartVo {
     private List<CartProductVo> cartProductVoList;
     private BigDecimal cartTotalPrice;

@@ -9,6 +9,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * FTP工具类
+ * @author panjing
+ */
 public class FTPUtil {
 
     private static  final Logger logger = LoggerFactory.getLogger(FTPUtil.class);
@@ -23,6 +27,13 @@ public class FTPUtil {
         this.user = user;
         this.pwd = pwd;
     }
+
+    /**
+     * 判断上传是否成功
+     * @param fileList
+     * @return
+     * @throws IOException
+     */
     public static boolean uploadFile(List<File> fileList) throws IOException {
         FTPUtil ftpUtil = new FTPUtil(ftpIp,21,ftpUser,ftpPass);
         logger.info("开始连接ftp服务器");
@@ -31,7 +42,13 @@ public class FTPUtil {
         return result;
     }
 
-
+    /**
+     * 上传文件
+     * @param remotePath
+     * @param fileList
+     * @return
+     * @throws IOException
+     */
     private boolean uploadFile(String remotePath,List<File> fileList) throws IOException {
         boolean uploaded = true;
         FileInputStream fis = null;
@@ -59,7 +76,6 @@ public class FTPUtil {
         }
         return uploaded;
     }
-
 
 
     private boolean connectServer(String ip,int port,String user,String pwd){

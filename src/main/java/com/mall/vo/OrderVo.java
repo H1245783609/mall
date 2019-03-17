@@ -2,7 +2,10 @@ package com.mall.vo;
 
 import java.math.BigDecimal;
 import java.util.List;
-
+/**
+ * 订单抽象对象
+ * @author panjing
+ */
 public class OrderVo {
 
     private Long orderNo;

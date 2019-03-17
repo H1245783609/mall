@@ -2,6 +2,10 @@ package com.mall.util;
 
 import java.security.MessageDigest;
 
+/**
+ * MD5工具类
+ * @author panjing
+ */
 public class MD5Util {
 
     private static String byteArrayToHexString(byte b[]) {

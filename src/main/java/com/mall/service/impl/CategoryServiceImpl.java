@@ -15,6 +15,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 分类操作方法类
+ * @author panjing
+ */
 @Service("iCategoryService")
 @Slf4j
 public class CategoryServiceImpl implements ICategoryService {
@@ -22,6 +26,12 @@ public class CategoryServiceImpl implements ICategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
 
+    /**
+     * 新增分类
+     * @param categoryName 类别名
+     * @param parentId
+     * @return
+     */
     public ServerResponse addCategory(String categoryName, Integer parentId){
         if(parentId == null && StringUtils.isBlank(categoryName)){
             return ServerResponse.createByErrorMessage("添加品类参数错误");
@@ -39,6 +49,12 @@ public class CategoryServiceImpl implements ICategoryService {
         return ServerResponse.createByErrorMessage("添加品类失败");
     }
 
+    /**
+     * 更新分类名
+     * @param categoryId
+     * @param categoryName
+     * @return
+     */
     public ServerResponse updateCategoryName(Integer categoryId, String categoryName){
         if(categoryId == null || StringUtils.isBlank(categoryName)){
             return ServerResponse.createByErrorMessage("更新品类参数错误");
@@ -55,6 +71,11 @@ public class CategoryServiceImpl implements ICategoryService {
         return ServerResponse.createByErrorMessage("更新品类名字失败");
     }
 
+    /**
+     * 获取当前分类所有子分类
+     * @param categoryId
+     * @return
+     */
     public ServerResponse<List<Category>> getChildrenParallelCategory(Integer categoryId){
         List<Category> categoryList = categoryMapper.selectCategoryChildrenByParentId(categoryId);
         if(CollectionUtils.isEmpty(categoryList)){

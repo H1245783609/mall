@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
+/**
+ * 前台 地址操作控制类
+ */
 @Controller
 @RequestMapping("/shipping/")
 public class ShippingController {
@@ -22,6 +25,12 @@ public class ShippingController {
     @Autowired
     private IShippingService iShippingService;
 
+    /**
+     * 新增地址
+     * @param session
+     * @param shipping 地址
+     * @return
+     */
     @RequestMapping("add.do")
     @ResponseBody
     public ServerResponse add(HttpSession session, Shipping shipping){
@@ -32,6 +41,12 @@ public class ShippingController {
         return iShippingService.add(user.getId(), shipping);
     }
 
+    /**
+     * 删除地址
+     * @param session
+     * @param shippingId 地址id
+     * @return
+     */
     @RequestMapping("del.do")
     @ResponseBody
     public ServerResponse del(HttpSession session, Integer shippingId){
@@ -42,6 +57,12 @@ public class ShippingController {
         return iShippingService.del(user.getId(), shippingId);
     }
 
+    /**
+     * 更新地址
+     * @param session
+     * @param shipping 地址
+     * @return
+     */
     @RequestMapping("update.do")
     @ResponseBody
     public ServerResponse update(HttpSession session, Shipping shipping){
@@ -52,6 +73,12 @@ public class ShippingController {
         return iShippingService.update(user.getId(), shipping);
     }
 
+    /**
+     * 选择地址
+     * @param session
+     * @param shippingId 地址
+     * @return
+     */
     @RequestMapping("select.do")
     @ResponseBody
     public ServerResponse<Shipping> select(HttpSession session, Integer shippingId){
@@ -62,6 +89,13 @@ public class ShippingController {
         return iShippingService.select(user.getId(), shippingId);
     }
 
+    /**
+     * 查看地址列表
+     * @param pageNum
+     * @param pageSize
+     * @param session
+     * @return
+     */
     @RequestMapping("list.do")
     @ResponseBody
     public ServerResponse<PageInfo> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, @RequestParam(value = "pageSize", defaultValue = "10") int pageSize, HttpSession session){

@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
+/**
+ * 后台 用户管理控制类
+ * @author panjing
+ */
 @Controller
 @RequestMapping("/manage/user")
 public class UserManageController {
@@ -19,6 +23,13 @@ public class UserManageController {
     @Autowired
     private IUserService iUserService;
 
+    /**
+     * 处理用户登录
+     * @param username 用户名
+     * @param password 密码
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "login.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> login(String username, String password, HttpSession session){

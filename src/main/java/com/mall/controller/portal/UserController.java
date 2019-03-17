@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 
+/**
+ * 前台 用户操作控制类
+ * @author panjing
+ */
 @Controller
 @RequestMapping("/user/")
 public class UserController {
@@ -22,8 +26,8 @@ public class UserController {
 
     /**
      * 用户登录
-     * @param username
-     * @param password
+     * @param username 用户名
+     * @param password 密码
      * @param session
      * @return
      */
@@ -37,6 +41,11 @@ public class UserController {
         return response;
     }
 
+    /**
+     * 用户登出
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "logout.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> logout(HttpSession session){
@@ -44,18 +53,34 @@ public class UserController {
         return ServerResponse.createBySuccess();
     }
 
+    /**
+     * 用户注册
+     * @param user 用户
+     * @return
+     */
     @RequestMapping(value = "register.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> register(User user){
         return iUserService.register(user);
     }
 
+    /**
+     * 校验用户名密码已存在
+     * @param str
+     * @param type
+     * @return
+     */
     @RequestMapping(value = "check_valid.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> checkValid(String str, String type){
         return iUserService.checkValid(str, type);
     }
 
+    /**
+     * 获取用户信息
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "get_user_info.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> getUserInfo(HttpSession session){
@@ -66,24 +91,50 @@ public class UserController {
         return ServerResponse.createByErrorMessage("用户未登录，无法获取当前用户的信息");
     }
 
+    /**
+     * 通过密保问题找回密码
+     * @param username 需要找回密码的用户名
+     * @return
+     */
     @RequestMapping(value = "forget_get_question.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> forgetGetQuestion(String username){
         return iUserService.selectQuestion(username);
     }
 
+    /**
+     * 校验密保问题答案是否正确
+     * @param username
+     * @param question 问题
+     * @param answer 答案
+     * @return
+     */
     @RequestMapping(value = "forget_check_answer.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> forgetCheckAnswer(String username, String question, String answer){
         return iUserService.checkAnswer(username, question, answer);
     }
 
+    /**
+     * 忘记密码时重置密码
+     * @param username
+     * @param passwordNew
+     * @param forgetToken
+     * @return
+     */
     @RequestMapping(value = "forget_reset_password.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> forgetResetPassword(String username, String passwordNew, String forgetToken){
         return iUserService.forgetResetPassword(username, passwordNew, forgetToken);
     }
 
+    /**
+     * 登录状态下重置密码
+     * @param session
+     * @param passwordOld
+     * @param passwordNew
+     * @return
+     */
     @RequestMapping(value = "reset_password.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> resetPassword(HttpSession session, String passwordOld, String passwordNew){
@@ -94,6 +145,12 @@ public class UserController {
         return iUserService.resetPassword(passwordOld, passwordNew, user);
     }
 
+    /**
+     * 更新个人信息
+     * @param session
+     * @param user
+     * @return
+     */
     @RequestMapping(value = "update_information.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> updateInformation(HttpSession session, User user){
@@ -110,6 +167,11 @@ public class UserController {
         return response;
     }
 
+    /**
+     * 获取当前用户信息
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "get_information.do", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<User> getInformation(HttpSession session){

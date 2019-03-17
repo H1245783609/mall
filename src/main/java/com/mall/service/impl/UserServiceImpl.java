@@ -12,13 +12,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
-
+/**
+ * 用户操作方法类
+ * @author panjing
+ */
 @Service("iUserService")
 public class UserServiceImpl implements IUserService {
 
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     * 用户登录
+     * @param username
+     * @param password
+     * @return
+     */
     @Override
     public ServerResponse<User> login(String username, String password) {
         int resultCount = userMapper.checkUsername(username);
@@ -37,6 +46,11 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createBySuccess("登陆成功", user);
     }
 
+    /**
+     * 用户注册
+     * @param user
+     * @return
+     */
     public ServerResponse<String> register(User user){
         ServerResponse validResponse = this.checkValid(user.getUsername(), Const.USERNAME);
         if(!validResponse.isSuccess()){
@@ -61,6 +75,12 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createBySuccessMessage("注册成功");
     }
 
+    /**
+     * 校验用户名密码已存在
+     * @param str
+     * @param type
+     * @return
+     */
     public ServerResponse<String> checkValid(String str, String type){
         if(StringUtils.isNoneBlank(type)){
             //开始校验
@@ -82,6 +102,11 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createBySuccessMessage("校验成功");
     }
 
+    /**
+     * 查询密保问题
+     * @param username
+     * @return
+     */
     public ServerResponse selectQuestion(String username){
         ServerResponse vaildResponse = this.checkValid(username, Const.USERNAME);
         if(vaildResponse.isSuccess()){
@@ -96,6 +121,13 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createByErrorMessage("找回密码的问题是空的");
     }
 
+    /**
+     * 校验问题答案是否正确
+     * @param username
+     * @param question
+     * @param answer
+     * @return
+     */
     public ServerResponse<String> checkAnswer(String username, String question, String answer){
         int resultCount = userMapper.checkAnswer(username, question, answer);
         if(resultCount > 0){
@@ -107,6 +139,13 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createByErrorMessage("问题的答案错误");
     }
 
+    /***
+     * 忘记密码状态下重置密码
+     * @param username
+     * @param passwordNew
+     * @param forgetToken
+     * @return
+     */
     public ServerResponse<String> forgetResetPassword(String username, String passwordNew, String forgetToken){
         if(StringUtils.isBlank(forgetToken)){
             return ServerResponse.createByErrorMessage("参数错误,token需要传递");
@@ -135,6 +174,13 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createByErrorMessage("修改密码失败");
     }
 
+    /**
+     * 登录时重置密码
+     * @param passwordOld
+     * @param passwordNew
+     * @param user
+     * @return
+     */
     public ServerResponse<String> resetPassword(String passwordOld, String passwordNew, User user){
         //防止横向越权，要检验一下这个用户的旧密码，一定要指定是这个用户，因为我们会查询出一个count(1)，如果不指定id，那么结果就是true了 count>0
         int resultCount = userMapper.checkPassword(MD5Util.MD5EncodeUtf8(passwordOld), user.getId());
@@ -149,6 +195,11 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createByErrorMessage("密码更新失败");
     }
 
+    /**
+     * 更新用户信息
+     * @param user
+     * @return
+     */
     public ServerResponse<User> updateInformation(User user){
         //username是不能被更新的
         //email也要进行一个校验，校验新的email是不是已经存在，并且存在的email如果相同的话，不能是我们当前这个用户的
@@ -170,6 +221,11 @@ public class UserServiceImpl implements IUserService {
         return ServerResponse.createByErrorMessage("更新个人信息失败");
     }
 
+    /**
+     * 获取用户信息
+     * @param userId
+     * @return
+     */
     public ServerResponse<User> getInfomation(Integer userId){
         User user = userMapper.selectByPrimaryKey(userId);
         if(user == null){
